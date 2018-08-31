@@ -27,7 +27,8 @@ class CustomSpreadsheetColumns(QtCore.QObject):
     { 'name' : 'Notes', 'cellType' : 'readonly' },
     { 'name' : 'Bid', 'cellType' : 'dropdown' },
     { 'name' : 'Artist', 'cellType' : 'dropdown' },
-    { 'name' : 'Department', 'cellType' : 'readonly' },        
+    { 'name' : 'Department', 'cellType' : 'readonly' },
+    { 'name' : 'Extra Notes', 'cellType' : 'text'}        
   ]
 
   def numColumns(self):
@@ -218,12 +219,8 @@ class CustomSpreadsheetColumns(QtCore.QObject):
     if currentColumn['name']=='Bid':
       cb = QtWidgets.QComboBox()
       cb.addItem('')
-      int_keys = []
-      for key in gStatusTags.keys():
-        int_keys.append(int(key))
-      int_keys = sorted(int_keys)
-      for item in int_keys:
-        cb.addItem(QtGui.QIcon('icons:status/TagReadyToStart.png'), "$" + str(item))
+      for key in gStatusTags:
+        cb.addItem(QtGui.QIcon('icons:status/TagReadyToStart.png'), key)          
       cb.addItem('--')  
       cb.currentIndexChanged.connect(self.statusChanged)
 
@@ -238,6 +235,13 @@ class CustomSpreadsheetColumns(QtCore.QObject):
       cb.currentIndexChanged.connect(self.artistNameChanged);
       return cb
     return None
+
+    if currentColumn['name']=='Extra Notes':
+      pass
+      
+
+
+
 
   def setModelData(self, row, column, item, editor):
     return False
@@ -401,7 +405,7 @@ def _setStatus(self, status):
   global gStatusTags
 
   # Get a valid Tag object from the Global list of statuses
-  if not status in gStatusTags.keys():
+  if not status in gStatusTags:
     print 'Status requested was not a valid Status string.'
     return 
 
@@ -415,11 +419,11 @@ def _setStatus(self, status):
   
   if not statusTag:
     statusTag = hiero.core.Tag('Status')
-    statusTag.setIcon(gStatusTags[status])
+    statusTag.setIcon('icons:status/TagReadyToStart.png')
     statusTag.metadata().setValue('tag.status', status) 
     self.addTag(statusTag)
 
-  statusTag.setIcon(gStatusTags[status])
+  statusTag.setIcon('icons:status/TagReadyToStart.png')
   statusTag.metadata().setValue('tag.status', status)
   
   self.sequence().editFinished()
@@ -461,7 +465,7 @@ class SetStatusMenu(QtWidgets.QMenu):
   def createStatusMenuActions(self):
     self.menuActions = []
     for status in self.statuses:
-      self.menuActions+=[titleStringTriggeredAction(status,self.setStatusFromMenuSelection, icon=gStatusTags[status])]
+      self.menuActions+=[titleStringTriggeredAction(status,self.setStatusFromMenuSelection, icon='icons:status/TagReadyToStart.png')]
 
   def setStatusFromMenuSelection(self, menuSelectionStatus):
     selectedShots  = [item for item in self._selection if (isinstance(item,hiero.core.TrackItem))]
@@ -518,37 +522,14 @@ gArtistList = [{'artistName':'John Smith','artistIcon':'icons:TagActor.png','art
 # Note: This can be overwritten if you want to add a new status cellType or custom icon
 # Override the gStatusTags dictionary by adding your own 'Status':'Icon.png' key-value pairs.
 # Add new custom keys like so: gStatusTags['For Client'] = 'forClient.png'
-gStatusTags = {'100':'icons:status/TagReadyToStart.png',
-  '150':'icons:status/TagReadyToStart.png',
-  '200':'icons:status/TagReadyToStart.png',
-  '250':'icons:status/TagReadyToStart.png',
-  '300':'icons:status/TagReadyToStart.png',
-  '350':'icons:status/TagReadyToStart.png',
-  '400':'icons:status/TagReadyToStart.png',
-  '450':'icons:status/TagReadyToStart.png',
-  '500':'icons:status/TagReadyToStart.png',
-  '550':'icons:status/TagReadyToStart.png',
-  '600':'icons:status/TagReadyToStart.png',
-  '650':'icons:status/TagReadyToStart.png',
-  '700':'icons:status/TagReadyToStart.png',
-  '750':'icons:status/TagReadyToStart.png',
-  '800':'icons:status/TagReadyToStart.png',
-  '850':'icons:status/TagReadyToStart.png',
-  '900':'icons:status/TagReadyToStart.png',
-  '950':'icons:status/TagReadyToStart.png',
-  '1000':'icons:status/TagReadyToStart.png',
-  '1050':'icons:status/TagReadyToStart.png',
-  '1100':'icons:status/TagReadyToStart.png',
-  '1150':'icons:status/TagReadyToStart.png',
-  '1200':'icons:status/TagReadyToStart.png',
-  '1250':'icons:status/TagReadyToStart.png',
-  '1300':'icons:status/TagReadyToStart.png',
-  '1350':'icons:status/TagReadyToStart.png',
-  '1400':'icons:status/TagReadyToStart.png',
-  '1450':'icons:status/TagReadyToStart.png',
-  '1500':'icons:status/TagReadyToStart.png',
-  '1550':'icons:status/TagReadyToStart.png',
-  '1600':'icons:status/TagReadyToStart.png'}
+gStatusTags = [ '100', '150', '200', '250', '300', 
+                '350', '400', '450', '500', '550', 
+                '600', '650', '700', '750', '800', 
+                '850', '900', '950', '1000', '1050', 
+                '1100', '1150', '1200', '1250', '1300', 
+                '1350', '1400', '1450', '1500', '1550', 
+                '1600'
+              ]
 
 # Menu which adds a Set Status Menu to Timeline and Spreadsheet Views
 class AssignArtistMenu(QtWidgets.QMenu):
