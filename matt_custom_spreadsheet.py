@@ -218,8 +218,12 @@ class CustomSpreadsheetColumns(QtCore.QObject):
     if currentColumn['name']=='Bid':
       cb = QtWidgets.QComboBox()
       cb.addItem('')
+      int_keys = []
       for key in gStatusTags.keys():
-        cb.addItem(QtGui.QIcon(gStatusTags[key]), key)
+        int_keys.append(int(key))
+      int_keys = sorted(int_keys)
+      for item in int_keys:
+        cb.addItem(QtGui.QIcon('icons:status/TagReadyToStart.png'), str(item))
       cb.addItem('--')  
       cb.currentIndexChanged.connect(self.statusChanged)
 
