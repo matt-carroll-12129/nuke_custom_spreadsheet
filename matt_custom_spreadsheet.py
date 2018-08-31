@@ -522,13 +522,13 @@ gArtistList = [{'artistName':'John Smith','artistIcon':'icons:TagActor.png','art
 # Note: This can be overwritten if you want to add a new status cellType or custom icon
 # Override the gStatusTags dictionary by adding your own 'Status':'Icon.png' key-value pairs.
 # Add new custom keys like so: gStatusTags['For Client'] = 'forClient.png'
-gStatusTags = [ '100', '150', '200', '250', '300', 
-                '350', '400', '450', '500', '550', 
-                '600', '650', '700', '750', '800', 
-                '850', '900', '950', '1000', '1050', 
-                '1100', '1150', '1200', '1250', '1300', 
-                '1350', '1400', '1450', '1500', '1550', 
-                '1600'
+gStatusTags = [ '$100', '$150', '$200', '$250', '$300', 
+                '$350', '$400', '$450', '$500', '$550', 
+                '$600', '$650', '$700', '$750', '$800', 
+                '$850', '$900', '$950', '$1000', '$1050', 
+                '$1100', '$1150', '$1200', '$1250', '$1300', 
+                '$1350', '$1400', '$1450', '$1500', '$1550', 
+                '$1600'
               ]
 
 # Menu which adds a Set Status Menu to Timeline and Spreadsheet Views
